@@ -108,3 +108,4 @@ scripts/
 .cursor/rules/dev_workflow.mdc
 .cursor/rules/taskmaster.mdc
 
+.worktrees/
