@@ -267,12 +267,35 @@ Rails.application.routes.draw do
       post "auth/login", to: "auth#login"
       post "auth/refresh", to: "auth#refresh"
 
+      # Admin endpoints (superadmin only)
+      namespace :admin do
+        post "invite_codes", to: "invite_codes#create"
+      end
+
       # Production API endpoints
-      resources :accounts, only: [ :index ]
-      resources :categories, only: [ :index, :show ]
+      resources :accounts, only: [ :index, :create ]
+      resources :categories, only: [ :index, :show, :create, :update, :destroy ]
       resources :transactions, only: [ :index, :show, :create, :update, :destroy ]
       resource :usage, only: [ :show ], controller: "usage"
       resource :sync, only: [ :create ], controller: "sync"
+
+      # Overview and Reports
+      get "overview", to: "overview#show"
+      namespace :reports do
+        get "net_worth", to: "reports#net_worth"
+        get "cashflow", to: "reports#cashflow"
+        get "balance_sheet", to: "reports#balance_sheet"
+        get "outflows", to: "reports#outflows"
+      end
+
+      # Budgets
+      resources :budgets, only: [ :index, :show, :update ]
+
+      # Tags
+      resources :tags, only: [ :index, :create, :update, :destroy ]
+
+      # Merchants
+      resources :merchants, only: [ :index, :create, :update, :destroy ]
 
       resources :chats, only: [ :index, :show, :create, :update, :destroy ] do
         resources :messages, only: [ :create ] do
@@ -291,7 +314,9 @@ Rails.application.routes.draw do
     end
   end
 
-
+  # Swagger UI for API documentation
+  get "/api-docs", to: "swagger_ui#index"
+  get "/api-docs/*path", to: "swagger_ui#index"
 
   resources :currencies, only: %i[show]
 

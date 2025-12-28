@@ -14,5 +14,8 @@
 		"format": "biome format --write"
 	},
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"swagger-ui-dist": "^5.31.0"
+	}
 }
